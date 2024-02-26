@@ -1,5 +1,4 @@
 #include "rb_trees.h"
-#include <stdlib.h>
 
 /**
  * rb_tree_node - Creates a Red-Black Tree node
@@ -18,6 +17,7 @@ rb_tree_t *rb_tree_node(rb_tree_t *parent, int value, rb_color_t color)
 	new_node->parent = parent;
 	new_node->n = value;
 	new_node->color = color;
-
+	new_node->left = NULL;
+	new_node->right = NULL;
 	return (new_node);
 }
