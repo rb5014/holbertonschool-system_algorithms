@@ -2,7 +2,14 @@
 #define _RB_TREES_H_
 
 #include <stdlib.h>
+#include <assert.h>
 
+#define LEFT  0
+#define RIGHT 1
+#define childDir(N) (N == (N->parent)->right ? RIGHT : LEFT)
+#define RotateDir(N, dir) RotateDirRoot(T, N, dir)
+#define RotateLeft(N)    RotateDirRoot(T, N, LEFT)
+#define RotateRight(N)   RotateDirRoot(T, N, RIGHT)
 /**
  * enum rb_color_e - Possible color of a Red-Black tree
  *
@@ -16,6 +23,7 @@ typedef enum rb_color_e
 	BLACK,
 	DOUBLE_BLACK
 } rb_color_t;
+
 
 /**
  * struct rb_tree_s - Red-Black tree node structure
@@ -37,5 +45,7 @@ typedef struct rb_tree_s
 
 rb_tree_t *rb_tree_node(rb_tree_t *parent, int value, rb_color_t color);
 int rb_tree_is_valid(const rb_tree_t *tree);
-
+rb_tree_t *rb_tree_insert(rb_tree_t **tree, int value);
+void balance_tree(rb_tree_t **T, rb_tree_t **node, int dir);
+rb_tree_t *RotateDirRoot(rb_tree_t **T, rb_tree_t *P, int dir);
 #endif /* _RB_TREES_H_ */
