@@ -49,4 +49,5 @@ void balance_tree(rb_tree_t **T, rb_tree_t **node);
 rb_tree_t *rotate_dir_root(rb_tree_t **T, rb_tree_t *P, int dir);
 void case_i56(rb_tree_t **T, rb_tree_t *P, rb_tree_t *N, rb_tree_t *G,
 int dir);
+rb_tree_t *array_to_rb_tree(int *array, size_t size);
 #endif /* _RB_TREES_H_ */
