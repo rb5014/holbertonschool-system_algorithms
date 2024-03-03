@@ -136,7 +136,6 @@ rb_tree_t *rotate_dir_root(rb_tree_t **T, rb_tree_t *P, int dir)
 	rb_tree_t *S = (dir == LEFT) ? P->right : P->left;
 	rb_tree_t *C;
 
-	assert(S != NULL); /* pointer to true node required */
 	C = (dir == LEFT) ? S->left : S->right;
 	if (dir == LEFT)
 		P->right = C;
