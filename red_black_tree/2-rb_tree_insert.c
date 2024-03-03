@@ -1,4 +1,9 @@
 #include "rb_trees.h"
+#define LEFT  0
+#define RIGHT 1
+#define RotateDir(N, dir) rotate_dir_root(T, N, dir)
+#define RotateLeft(N)    rotate_dir_root(T, N, LEFT)
+#define RotateRight(N)   rotate_dir_root(T, N, RIGHT)
 
 /**
  * rb_tree_insert - Inserts a value in a Red-Black Tree
@@ -73,7 +78,7 @@ void balance_tree(rb_tree_t **T, rb_tree_t **node)
 		if (G == NULL)
 			goto Case_I4; /* P RED and root */
 		/* else: P red and G != NULL */
-		dir = childDir(P); /* the side of parent G on which node P is located */
+		dir = child_dir(P); /* the side of parent G on which node P is located */
 		U = (dir == LEFT) ? G->right : G->left;
 		if ((U == NULL) || (U->color == BLACK)) /* Considered BLACK */
 			goto Case_I56;						/* P RED && U BLACK */
@@ -162,4 +167,14 @@ rb_tree_t *rotate_dir_root(rb_tree_t **T, rb_tree_t *P, int dir)
 	else
 		*T = S;
 	return (S); /* new root of subtree */
+}
+
+/**
+ * child_dir - return the direction of the node
+ * @N: node to get the direction
+ * Return: RIGHT if N == N->parent->right, LEFT otherwise
+*/
+int child_dir(rb_tree_t *N)
+{
+	return (N->parent->right == N ? RIGHT : LEFT);
 }

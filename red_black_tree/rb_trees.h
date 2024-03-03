@@ -3,12 +3,6 @@
 
 #include <stdlib.h>
 
-#define LEFT  0
-#define RIGHT 1
-#define childDir(N) (N == (N->parent)->right ? RIGHT : LEFT)
-#define RotateDir(N, dir) rotate_dir_root(T, N, dir)
-#define RotateLeft(N)    rotate_dir_root(T, N, LEFT)
-#define RotateRight(N)   rotate_dir_root(T, N, RIGHT)
 /**
  * enum rb_color_e - Possible color of a Red-Black tree
  *
@@ -50,4 +44,5 @@ rb_tree_t *rotate_dir_root(rb_tree_t **T, rb_tree_t *P, int dir);
 void case_i56(rb_tree_t **T, rb_tree_t *P, rb_tree_t *N, rb_tree_t *G,
 int dir);
 rb_tree_t *array_to_rb_tree(int *array, size_t size);
+int child_dir(rb_tree_t *N);
 #endif /* _RB_TREES_H_ */
