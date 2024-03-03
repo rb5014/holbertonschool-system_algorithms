@@ -14,24 +14,13 @@
  */
 rb_tree_t *rb_tree_insert(rb_tree_t **tree, int value)
 {
-	static int *values, nb_values;
 	int i, inserted = 0, balanced = 0;
 	rb_tree_t *new_N, **C = tree;
 	int dir;
 
-	for (i = 0; i < nb_values; i++)
-	{
-		if (value == values[i])
-			return (NULL);
-	}
-
 	new_N = rb_tree_node(NULL, value, RED);
 	if (new_N == NULL)
 		return (NULL);
-
-	nb_values++;
-	values = (int *)realloc(values, nb_values);
-	values[nb_values - 1] = value;
 
 	if (*tree == NULL)
 	{
@@ -42,7 +31,10 @@ rb_tree_t *rb_tree_insert(rb_tree_t **tree, int value)
 
 	while (inserted == 0)
 	{
+		if (value == (*C)->n)
+			return (NULL);
 		dir = ((value < (*C)->n) ? dir = LEFT : RIGHT);
+		new_N->parent = *C;
 		C = (dir == LEFT) ? &(*C)->left : &(*C)->right;
 		if (*C == NULL)
 		{
@@ -51,23 +43,29 @@ rb_tree_t *rb_tree_insert(rb_tree_t **tree, int value)
 		}
 	}
 
-	balance_tree(tree, C, dir);
+	balance_tree(tree, C);
+	(*tree)->color = BLACK;
 	return (new_N);
 }
 
-void balance_tree(rb_tree_t **T, rb_tree_t **node, int dir)
+/**
+ * balance_tree - balance the tree after node insertion
+ * @T: pointer of pointer of tree
+ * @node: pointer of pointer of node
+*/
+void balance_tree(rb_tree_t **T, rb_tree_t **node)
 {
 	rb_tree_t *N = *node;
 	rb_tree_t *P = N->parent;
 	rb_tree_t *G = (P != NULL) ? P->parent : NULL;
 	rb_tree_t *U;
+	int dir;
 
 	while (P != NULL)
 	{
 		/* CASE 1 (P BLACK)*/
 		if (P->color == BLACK)
 			return;
-
 		/* From now on P can only be RED */
 		G = P->parent;
 		if (G == NULL)
@@ -86,21 +84,33 @@ void balance_tree(rb_tree_t **T, rb_tree_t **node, int dir)
 		/*   (= 2 tree levels) */
 		P = N->parent;
 	}
-
+	return;
 Case_I4: /* P is the root and red: */
-	if (P != NULL)
-		P->color = BLACK;
+	P->color = BLACK;
 	return;
 
 Case_I56: /* P red && U black: */
-	if ((dir == LEFT) && (N == P->right))
+	case_i56(T, P, N, G, dir);
+}
+
+/**
+ * case_i56 - Handle the case where parent is red and uncle is black
+ * @T: double pointer of red-black tree
+ * @N: Node to reorganize
+ * @P: parent of node
+ * @G: parent of parent of node
+ * @dir: dir ∈ { LEFT, RIGHT }
+*/
+void case_i56(rb_tree_t **T, rb_tree_t *P, rb_tree_t *N, rb_tree_t *G, int dir)
+{
+	if ((dir == LEFT) && (P->right == N))
 	{						/* Case_I5 (P red && U black && N inner grandchild of G): */
 		RotateDir(P, LEFT); /* P is never the root */
 		N = P;				/* new current node */
 		P = G->left;		/* new parent of N */
 							/* fall through to Case_I6 */
 	}
-	else if ((dir == RIGHT) && (N == P->left))
+	else if ((dir == RIGHT) && (P->left == N))
 	{						 /* Case_I5 (P red && U black && N inner grandchild of G): */
 		RotateDir(P, RIGHT); /* P is never the root */
 		N = P;				 /* new current node */
@@ -108,16 +118,21 @@ Case_I56: /* P red && U black: */
 							 /* fall through to Case_I6 */
 	}
 	/* Case_I6 (P red && U black && N outer grandchild of G): */
-	RotateDirRoot(T, G, 1 - dir); /* G may be the root */
+	rotate_dir_root(T, G, 1 - dir); /* G may be the root */
 	P->color = BLACK;
 	G->color = RED;
 	return; /* insertion complete */
-} /* end of RBinsert1 */
+}
 
-rb_tree_t *RotateDirRoot(rb_tree_t **T, /* red–black tree */
-	rb_tree_t *P,  /* root of subtree (may be the root of T) */
-	int dir)
-{ /* dir ∈ { LEFT, RIGHT } */
+/**
+ * rotate_dir_root - rotate nodes
+ * @T: double pointer of red-black tree
+ * @P: root of subtree (may be the root of T)
+ * @dir: dir ∈ { LEFT, RIGHT }
+ * Return: new root of subtree
+*/
+rb_tree_t *rotate_dir_root(rb_tree_t **T, rb_tree_t *P, int dir)
+{
 	rb_tree_t *G = P->parent;
 	rb_tree_t *S = (dir == LEFT) ? P->right : P->left;
 	rb_tree_t *C;
