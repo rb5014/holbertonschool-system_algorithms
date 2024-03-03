@@ -47,5 +47,6 @@ int rb_tree_is_valid(const rb_tree_t *tree);
 rb_tree_t *rb_tree_insert(rb_tree_t **tree, int value);
 void balance_tree(rb_tree_t **T, rb_tree_t **node);
 rb_tree_t *rotate_dir_root(rb_tree_t **T, rb_tree_t *P, int dir);
-void case_i56(rb_tree_t **T, rb_tree_t *P, rb_tree_t *N, rb_tree_t *G, int dir);
+void case_i56(rb_tree_t **T, rb_tree_t *P, rb_tree_t *N, rb_tree_t *G,
+int dir);
 #endif /* _RB_TREES_H_ */
