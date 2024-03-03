@@ -21,6 +21,9 @@ rb_tree_t *rb_tree_insert(rb_tree_t **tree, int value)
 	if (new_N == NULL)
 		return (NULL);
 
+	if (tree == NULL)
+		return (NULL);
+
 	if (*tree == NULL)
 	{
 		new_N->color = BLACK;
