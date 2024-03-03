@@ -1,9 +1,4 @@
 #include "rb_trees.h"
-#define LEFT  0
-#define RIGHT 1
-#define RotateDir(N, dir) rotate_dir_root(T, N, dir)
-#define RotateLeft(N)    rotate_dir_root(T, N, LEFT)
-#define RotateRight(N)   rotate_dir_root(T, N, RIGHT)
 
 /**
  * rb_tree_insert - Inserts a value in a Red-Black Tree
@@ -40,9 +35,9 @@ rb_tree_t *rb_tree_insert(rb_tree_t **tree, int value)
 	{
 		if (value == (*C)->n)
 			return (NULL);
-		dir = ((value < (*C)->n) ? LEFT : RIGHT);
+		dir = ((value < (*C)->n) ? 0 : 1);
 		new_N->parent = *C;
-		C = (dir == LEFT) ? &(*C)->left : &(*C)->right;
+		C = (dir == 0) ? &(*C)->left : &(*C)->right;
 		if (*C == NULL)
 		{
 			*C = new_N;
@@ -79,7 +74,7 @@ void balance_tree(rb_tree_t **T, rb_tree_t **node)
 			goto Case_I4; /* P RED and root */
 		/* else: P red and G != NULL */
 		dir = child_dir(P); /* the side of parent G on which node P is located */
-		U = (dir == LEFT) ? G->right : G->left;
+		U = (dir == 0) ? G->right : G->left;
 		if ((U == NULL) || (U->color == BLACK)) /* Considered BLACK */
 			goto Case_I56;						/* P RED && U BLACK */
 		/* Case 2 (P+U RED) */
@@ -110,16 +105,16 @@ Case_I56: /* P red && U black: */
 */
 void case_i56(rb_tree_t **T, rb_tree_t *P, rb_tree_t *N, rb_tree_t *G, int dir)
 {
-	if ((dir == LEFT) && (P->right == N))
+	if ((dir == 0) && (P->right == N))
 	{						/* Case_I5 (P red && U black && N inner grandchild of G): */
-		RotateDir(P, LEFT); /* P is never the root */
+		rotate_dir_root(T, P, 0); /* P is never the root */
 		N = P;				/* new current node */
 		P = G->left;		/* new parent of N */
 							/* fall through to Case_I6 */
 	}
-	else if ((dir == RIGHT) && (P->left == N))
+	else if ((dir == 1) && (P->left == N))
 	{						 /* Case_I5 (P red && U black && N inner grandchild of G): */
-		RotateDir(P, RIGHT); /* P is never the root */
+		rotate_dir_root(T, P, 1); /* P is never the root */
 		N = P;				 /* new current node */
 		P = G->right;		 /* new parent of N */
 							 /* fall through to Case_I6 */
@@ -141,17 +136,17 @@ void case_i56(rb_tree_t **T, rb_tree_t *P, rb_tree_t *N, rb_tree_t *G, int dir)
 rb_tree_t *rotate_dir_root(rb_tree_t **T, rb_tree_t *P, int dir)
 {
 	rb_tree_t *G = P->parent;
-	rb_tree_t *S = (dir == LEFT) ? P->right : P->left;
+	rb_tree_t *S = (dir == 0) ? P->right : P->left;
 	rb_tree_t *C;
 
-	C = (dir == LEFT) ? S->left : S->right;
-	if (dir == LEFT)
+	C = (dir == 0) ? S->left : S->right;
+	if (dir == 0)
 		P->right = C;
 	else
 		P->left = C;
 	if (C != NULL)
 		C->parent = P;
-	if (dir == LEFT)
+	if (dir == 0)
 		S->left = P;
 	else
 		S->right = P;
@@ -176,5 +171,5 @@ rb_tree_t *rotate_dir_root(rb_tree_t **T, rb_tree_t *P, int dir)
 */
 int child_dir(rb_tree_t *N)
 {
-	return (N->parent->right == N ? RIGHT : LEFT);
+	return (N->parent->right == N ? 1 : 0);
 }
