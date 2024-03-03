@@ -31,32 +31,23 @@ int rb_tree_is_valid(const rb_tree_t *tree)
 			((tree->right != NULL) && (tree->right->color == RED))
 		)
 	)
-	{
 		is_valid = 0;
-	}
 	else
 	{
-		/* Check on existing left node (only if tree still valid) */
 		if ((is_valid == 1) && (tree->left != NULL))
 		{
-			/* Check if its the only node (if yes must be RED) */
 			if ((tree->right == NULL) && (tree->left->color != RED))
 				is_valid = 0;
-			/* Keep traversing */
 			else
 				is_valid = rb_tree_is_valid(tree->left);
 		}
-		/* Check on existing right node (only if tree still valid) */
 		if ((is_valid == 1) && (tree->right != NULL))
 		{
-			/* Check if its the only node (if yes must be RED) */
 			if ((tree->left == NULL) && (tree->right->color != RED))
 				is_valid = 0;
-			/* Keep traversing */
 			else
 				is_valid = rb_tree_is_valid(tree->right);
 		}
 	}
-
 	return (is_valid);
 }
