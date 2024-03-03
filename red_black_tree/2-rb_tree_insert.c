@@ -14,7 +14,6 @@
  */
 rb_tree_t *rb_tree_insert(rb_tree_t **tree, int value)
 {
-	int i, inserted = 0, balanced = 0;
 	rb_tree_t *new_N, **C = tree;
 	int dir;
 
@@ -29,17 +28,17 @@ rb_tree_t *rb_tree_insert(rb_tree_t **tree, int value)
 		return (*tree);
 	}
 
-	while (inserted == 0)
+	while (1)
 	{
 		if (value == (*C)->n)
 			return (NULL);
-		dir = ((value < (*C)->n) ? dir = LEFT : RIGHT);
+		dir = ((value < (*C)->n) ? LEFT : RIGHT);
 		new_N->parent = *C;
 		C = (dir == LEFT) ? &(*C)->left : &(*C)->right;
 		if (*C == NULL)
 		{
 			*C = new_N;
-			inserted = 1;
+			break;
 		}
 	}
 
