@@ -17,13 +17,10 @@ rb_tree_t *rb_tree_insert(rb_tree_t **tree, int value)
 	rb_tree_t *new_N, **C = tree;
 	int dir;
 
-	new_N = rb_tree_node(NULL, value, RED);
-	if (new_N == NULL)
-		return (NULL);
-
 	if (tree == NULL)
 		return (NULL);
 
+	new_N = rb_tree_node(NULL, value, RED);
 	if (*tree == NULL)
 	{
 		new_N->color = BLACK;
@@ -31,10 +28,14 @@ rb_tree_t *rb_tree_insert(rb_tree_t **tree, int value)
 		return (*tree);
 	}
 
+
 	while (1)
 	{
 		if (value == (*C)->n)
+		{
+			free(new_N);
 			return (NULL);
+		}
 		dir = ((value < (*C)->n) ? 0 : 1);
 		new_N->parent = *C;
 		C = (dir == 0) ? &(*C)->left : &(*C)->right;
