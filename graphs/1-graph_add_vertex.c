@@ -13,7 +13,7 @@ vertex_t *create_vertex(size_t *nb_vertices, const char *str)
 
 	if (!new)
 		return (NULL);
-	new->content = strdup(str);
+	new->content = str != NULL ? strdup(str) : strdup("");
 	new->index = (*nb_vertices)++;
 	new->edges = NULL;
 	new->nb_edges = 0;
@@ -33,15 +33,20 @@ vertex_t *create_vertex(size_t *nb_vertices, const char *str)
 */
 vertex_t *graph_add_vertex(graph_t *graph, const char *str)
 {
-	vertex_t *new = NULL, *tmp = graph->vertices;
+	vertex_t *new = NULL, *tmp = NULL;
 
+	if (!graph)
+		return (NULL);
 	if (!graph->vertices)
 	{
 		graph->vertices = create_vertex(&(graph->nb_vertices), str);
 		return (graph->vertices);
 	}
+	else
+		tmp = graph->vertices;
 	while (tmp)
 	{
+
 		if (strcmp(str, tmp->content) == 0)
 			break;
 		if (!tmp->next)
