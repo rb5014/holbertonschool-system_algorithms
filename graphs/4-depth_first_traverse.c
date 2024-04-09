@@ -33,19 +33,20 @@ void visit_vertice(vertex_t *v, size_t depth,
 	n_visited++;
 	visited_indexes[n_visited - 1] = v->index;
 	action(v, depth);
-	depth++;
+
 	if (depth > max_depth)
 		max_depth = depth;
+	depth++;
 	tmp = v->edges;
 	for (i = 0; i < v->nb_edges; i++)
 	{
 		if (is_visited(tmp->dest->index) == 0)
 		{
 			visit_vertice(tmp->dest, depth, action);
-			depth--;
 		}
 		tmp = tmp->next;
 	}
+	depth--;
 }
 
 /**
