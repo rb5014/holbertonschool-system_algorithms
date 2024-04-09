@@ -4,6 +4,8 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
+
 
 /**
  * enum edge_type_e - Enumerates the different types of
@@ -76,5 +78,12 @@ int graph_add_edge(
 edge_t *create_edge(vertex_t *dest);
 int vertice_add_edge(vertex_t *src, vertex_t *dest, edge_type_t type);
 void graph_delete(graph_t *graph);
+
+size_t
+depth_first_traverse(const graph_t *graph,
+					 void (*action)(const vertex_t *v, size_t depth));
+void visit_vertice(vertex_t *v, size_t depth,
+				   void (*action)(const vertex_t *v, size_t depth));
+int is_visited(size_t index);
 
 #endif /* GRAPHS_H */
