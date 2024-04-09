@@ -13,7 +13,7 @@ vertex_t *create_vertex(size_t *nb_vertices, const char *str)
 
 	if (!new)
 		return (NULL);
-	new->content = (char *) str;
+	new->content = str != NULL ? strdup(str) : strdup("");
 	new->index = (*nb_vertices)++;
 	new->edges = NULL;
 	new->nb_edges = 0;
