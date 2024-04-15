@@ -50,5 +50,6 @@ breadth_first_traverse(const graph_t *graph,
 	}
 	free(visited);
 	free(queue);
+	free(depth);
 	return (max_depth);
 }
