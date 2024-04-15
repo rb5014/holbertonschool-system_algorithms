@@ -19,9 +19,9 @@ breadth_first_traverse(const graph_t *graph,
 	vertex_t **queue = malloc(sizeof(vertex_t *) * graph->nb_vertices);
 	size_t *visited = calloc(graph->nb_vertices, sizeof(size_t));
 	size_t *depth = calloc(graph->nb_vertices, sizeof(size_t));
-	size_t front = 0, rear = 0, current_depth = 0;
+	size_t front = 0, rear = 0, current_depth = 0, max_depth = 0;
 
-	if (!queue || !visited || !graph || !graph->vertices)
+	if (!queue || !visited || !depth || !graph || !graph->vertices)
 		return (0);
 
 	queue[rear++] = graph->vertices;
@@ -31,6 +31,8 @@ breadth_first_traverse(const graph_t *graph,
 	{
 		current_vertex = queue[front];
 		current_depth = depth[front];
+		if (current_depth > max_depth)
+			max_depth = current_depth;
 		action(current_vertex, current_depth);
 		front++;
 		tmp_edge = current_vertex->edges;
@@ -48,5 +50,5 @@ breadth_first_traverse(const graph_t *graph,
 	}
 	free(visited);
 	free(queue);
-	return (current_depth);
+	return (max_depth);
 }
