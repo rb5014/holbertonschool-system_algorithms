@@ -70,20 +70,31 @@ typedef struct graph_s
 } graph_t;
 
 void graph_display(const graph_t *graph);
+
+/* 0-graph_create.c*/
 graph_t *graph_create(void);
+
+/* 1-graph_add_vertex.c */
 vertex_t *create_vertex(size_t *nb_vertices, const char *str);
 vertex_t *graph_add_vertex(graph_t *graph, const char *str);
+
+/* 2-graph_add_edge.c */
 int graph_add_edge(
 	graph_t *graph, const char *src, const char *dest, edge_type_t type);
 edge_t *create_edge(vertex_t *dest);
 int vertice_add_edge(vertex_t *src, vertex_t *dest, edge_type_t type);
+
+/* 3-graph_delete.c */
 void graph_delete(graph_t *graph);
 
+/* 4-depth_first_traverse.c */
 size_t
 depth_first_traverse(const graph_t *graph,
 					 void (*action)(const vertex_t *v, size_t depth));
-void visit_vertice(vertex_t *v, size_t depth,
-				   void (*action)(const vertex_t *v, size_t depth));
-int is_visited(size_t index);
+
+/* 5-breadth_first_traverse.c */
+size_t
+breadth_first_traverse(const graph_t *graph,
+					   void (*action)(const vertex_t *v, size_t depth));
 
 #endif /* GRAPHS_H */
