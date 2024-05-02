@@ -93,16 +93,14 @@ void *heap_extract(heap_t *heap)
 
 	last_node = get_last_node(heap->root, heap->size);
 
+	heap->root->data = last_node->data;
+
 	parent = last_node->parent;
 	if (parent->left == last_node)
 		parent->left = NULL;
 	else
 		parent->right = NULL;
-
-	last_node->parent = NULL; /* root parent is NULL */
-	last_node->left = heap->root->left;
-	last_node->right = heap->root->right;
-	heap->root = last_node;
+	free(last_node);
 	heap->size--;
 	heapify_down(heap);
 	return (root_data);
