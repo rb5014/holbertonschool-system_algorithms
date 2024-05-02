@@ -12,17 +12,20 @@
  * size must be set to 0
  * @data_cmp: pointer to a comparison function
  * Return: pointer to the created heap_t structure, or NULL if it fails
-*/
+ */
 heap_t *heap_create(int (*data_cmp)(void *, void *))
 {
-	heap_t *new = malloc(sizeof(heap_t));
+	heap_t *new; /* Pointer to the new heap structure */
 
-	if (!new)
-		return (NULL);
+	/* Allocate memory for the new heap structure */
+	new = malloc(sizeof(heap_t));
+	if (new == NULL)
+		return (NULL); /* Memory allocation failed */
 
-	new->root = NULL;
-	new->size = 0;
-	new->data_cmp = data_cmp;
+	/* Initialize the new heap structure */
+	new->root = NULL;		  /* Set root to NULL since the heap is empty */
+	new->size = 0;			  /* Set size to 0 since there are no nodes yet */
+	new->data_cmp = data_cmp; /* Set the comparison function pointer */
 
-	return (new);
+	return (new); /* Return a pointer to the created heap */
 }

@@ -58,21 +58,21 @@ void heapify_up(heap_t *heap, binary_tree_node_t *node)
  */
 binary_tree_node_t *find_parent_for_insertion(binary_tree_node_t *root)
 {
-	binary_tree_node_t *prio_queue[100];
+	binary_tree_node_t *queue[100];
 	int front = -1, rear = 0;
 
 	/* If the tree is empty, return NULL */
 	if (root == NULL)
 		return (NULL);
 
-	prio_queue[rear] = root;
+	queue[rear] = root;
 
 	while ((front != rear) && (rear < 99))
 	{
-		if (prio_queue[++front] == NULL)
-			return (prio_queue[parent(front)]);
-		prio_queue[++rear] = prio_queue[front]->left;
-		prio_queue[++rear] = prio_queue[front]->right;
+		if (queue[++front] == NULL)
+			return (queue[parent(front)]);
+		queue[++rear] = queue[front]->left;
+		queue[++rear] = queue[front]->right;
 	}
 
 	return (NULL);
