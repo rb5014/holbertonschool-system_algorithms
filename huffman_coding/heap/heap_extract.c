@@ -36,7 +36,8 @@ void *get_last_node(binary_tree_node_t *root, size_t size)
  * @heap: Pointer to heap
  *
  * Description:
- * This function moves the given node downwards in the heap, swapping it with its
+ * This function moves the given node downwards in the heap,
+ * swapping it with its
  * parent if necessary to maintain the heap property. It continues this process
  * until either the node becomes a leaf of the heap or it satisfies the heap
  * property.
