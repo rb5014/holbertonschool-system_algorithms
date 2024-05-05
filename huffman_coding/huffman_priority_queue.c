@@ -10,10 +10,13 @@
  */
 int data_cmp(void *p1, void *p2)
 {
+	binary_tree_node_t *n1, *n2;
 	symbol_t *s1, *s2;
 
-	s1 = (symbol_t *)p1;
-	s2 = (symbol_t *)p2;
+	n1 = (binary_tree_node_t *)p1;
+	n2 = (binary_tree_node_t *)p2;
+	s1 = (symbol_t *)n1->data;
+	s2 = (symbol_t *)n2->data;
 
 	return ((int)(s1->freq - s2->freq));
 }
