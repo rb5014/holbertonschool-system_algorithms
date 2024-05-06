@@ -29,47 +29,55 @@ void *get_last_node(binary_tree_node_t *root, size_t size)
 	return (queue[size - 1]);
 }
 
+/**
+ * get_min_child - get the minimum child of a node
+ * @node: pointer to the node from which we check the children
+ * @data_cmp: pointer to a comparison function
+ * Return: pointer to the minimum child of the parent node,
+ * or the only child (if one of them is NULL),
+ * or NULL if both children are NULL
+*/
+binary_tree_node_t *get_min_child(binary_tree_node_t *node,
+								  int (*data_cmp)(void *, void *))
+{
+	binary_tree_node_t *min_child;
+
+	if (node->left && node->right)
+	{
+		if (data_cmp(node->left->data, node->right->data) <= 0)
+			min_child = node->left;
+		else
+			min_child = node->right;
+	}
+	else if (node->left)
+		min_child = node->left;
+	else if (node->right)
+		min_child = node->right;
+	else
+		min_child = NULL;
+	return (min_child);
+}
 
 /**
  * heapify_down - Maintains the heap property by
  * moving a node downwards in the heap
- * @heap: Pointer to heap
- *
+ * @node: Pointer to the node
+ * @data_cmp: pointer to a comparison function
  * Description:
  * This function moves the given node downwards in the heap,
  * swapping it with its
  * parent if necessary to maintain the heap property. It continues this process
- * until either the node becomes a leaf of the heap or it satisfies the heap
- * property.
+ * recursively until either the node becomes a leaf of the heap or
+ * it satisfies the heap property.
  */
-void heapify_down(heap_t *heap)
+void heapify_down(binary_tree_node_t *node, int (*data_cmp)(void *, void *))
 {
-	binary_tree_node_t *root = heap->root;
+	binary_tree_node_t *min_child = get_min_child(node, data_cmp);
 
-	/* Continue as long as the node has childs and violates the heap property */
-	while (root->left || root->right)
+	if (min_child && (data_cmp(min_child->data, node->data) < 0))
 	{
-		if (root->left)
-		{
-			if (heap->data_cmp(root->left->data, root->data) < 0)
-			{
-				/* Swap the data of the current node with its left child */
-				swap_nodes_data(root, root->left);
-				root = root->left;
-				continue;
-			}
-		}
-		if (root->right)
-		{
-			if (heap->data_cmp(root->right->data, root->data) < 0)
-			{
-				/* Swap the data of the current node with its right child */
-				swap_nodes_data(root, root->right);
-				root = root->right;
-			}
-			else
-				break;
-		}
+		swap_nodes_data(min_child, node);
+		heapify_down(min_child, data_cmp);
 	}
 }
 
@@ -109,7 +117,7 @@ void *heap_extract(heap_t *heap)
 	else
 		parent->right = NULL;
 	heap->size--;
-	heapify_down(heap);
 	free(last_node);
+	heapify_down(heap->root, heap->data_cmp);
 	return (root_data);
 }
