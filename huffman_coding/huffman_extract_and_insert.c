@@ -12,7 +12,7 @@ int huffman_extract_and_insert(heap_t *priority_queue)
 	symbol_t *symbol_1, *symbol_2, *new_symbol;
 	size_t freq;
 
-	if (!priority_queue || !priority_queue->root || !priority_queue->size)
+	if (!priority_queue || !priority_queue->root || (priority_queue->size < 2))
 		return (0);
 
 
