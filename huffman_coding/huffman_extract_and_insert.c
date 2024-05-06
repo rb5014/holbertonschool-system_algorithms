@@ -26,7 +26,8 @@ int huffman_extract_and_insert(heap_t *priority_queue)
 	new_nested = binary_tree_node(NULL, new_symbol);
 	new_nested->left = node_1;
 	new_nested->right = node_2;
-
+	node_1->parent = new_nested;
+	node_2->parent = new_nested;
 	heap_insert(priority_queue, new_nested);
 
 	return (1);
