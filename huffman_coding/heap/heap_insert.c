@@ -109,7 +109,8 @@ binary_tree_node_t *heap_insert(heap_t *heap, void *data)
 	}
 	/* Find the parent node where the new node should be inserted */
 	parent = find_parent_for_insertion(heap->root);
-
+	if (!parent)
+		return (free(new_node), NULL);
 	/* Insert the new node as a child of the found parent */
 	if (parent->left == NULL)
 		parent->left = new_node;
