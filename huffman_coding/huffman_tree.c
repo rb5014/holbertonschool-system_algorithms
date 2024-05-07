@@ -1,6 +1,4 @@
 #include "huffman.h"
-void binary_tree_print(const binary_tree_node_t *heap, int (*print_data)(char *, void *));
-int symbol_print(char *buffer, void *data);
 /**
  * huffman_tree - builds the Huffman tree
  * @data: array of characters of size size
