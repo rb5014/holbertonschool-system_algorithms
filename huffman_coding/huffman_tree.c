@@ -14,7 +14,7 @@ binary_tree_node_t *huffman_tree(char *data, size_t *freq, size_t size)
 
 	if (min_heap == NULL)
 		return (NULL);
-	while (min_heap->root->left || min_heap->root->right)
+	while (min_heap->size > 1)
 	{
 		if (huffman_extract_and_insert(min_heap) == 0)
 			return (NULL);
