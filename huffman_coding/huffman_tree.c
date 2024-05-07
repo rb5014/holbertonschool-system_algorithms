@@ -12,13 +12,15 @@ binary_tree_node_t *huffman_tree(char *data, size_t *freq, size_t size)
 {
 	heap_t *min_heap = huffman_priority_queue(data, freq, size);
 
-	if ((min_heap == NULL) || (min_heap->root == NULL))
+	if (min_heap == NULL)
 		return (NULL);
-
 	while (min_heap->root->left || min_heap->root->right)
 	{
 		if (huffman_extract_and_insert(min_heap) == 0)
 			return (NULL);
+
 	}
+	free(min_heap->root);
+	free(min_heap);
 	return (min_heap->root->data);
 }
