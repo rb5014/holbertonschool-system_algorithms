@@ -22,6 +22,16 @@ int data_cmp(void *p1, void *p2)
 }
 
 /**
+ * free_nested - free data of a nested node (as void *data)
+ * @data: nested node to free
+*/
+void free_nested(void *data)
+{
+	free(((binary_tree_node_t *)data)->data);
+	free(data);
+}
+
+/**
  * huffman_priority_queue - creates a priority queue for
  * the Huffman coding algorithm
  * @data: array of characters of size size
@@ -40,16 +50,26 @@ heap_t *huffman_priority_queue(char *data, size_t *freq, size_t size)
 	symbol_t *symbol;
 	size_t i;
 
-	if (size == 0)
+	if (!size || !data || !freq)
 		return (NULL);
 
 	heap = heap_create(data_cmp);
+	if (!heap)
+		return (NULL);
 
 	for (i = 0; i < size; i++)
 	{
 		symbol = symbol_create(data[i], freq[i]);
 		nested = binary_tree_node(NULL, symbol);
-		heap_insert(heap, nested);
+		if (!symbol || !nested || !heap_insert(heap, nested))
+		{
+			if (symbol)
+				free(symbol);
+			if (nested)
+				free(nested);
+			heap_delete(heap, free_nested);
+			return (NULL);
+		}
 	}
 	return (heap);
 }
