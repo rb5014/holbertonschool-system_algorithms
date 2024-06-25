@@ -15,6 +15,9 @@ size_t nary_tree_traverse(nary_tree_t const *root,
 	static size_t current_depth;
 	static size_t biggest_depth;
 
+	if (!root)
+		return (biggest_depth);
+
 	if (current_depth > biggest_depth)
 		biggest_depth = current_depth;
 
